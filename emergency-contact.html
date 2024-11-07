@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emergency Contacts & Notifications</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="box">
+        <h3>Emergency Contact List</h3>
+        <ul id="contactList"></ul>
+        <input
+          type="text"
+          id="newContactName"
+          placeholder="Enter contact name"
+        />
+        <input
+          type="tel"
+          id="newContactPhone"
+          placeholder="Enter contact phone number"
+        />
+        <button onclick="addContact()">Add Contact</button>
+      </div>
+
+      <div class="box">
+        <h3>Notifications</h3>
+        <div id="notificationBox">
+          <!-- Notifications will be added here -->
+        </div>
+      </div>
+
+      <div class="box" id="map">
+        <h3>Location</h3>
+        <div id="mapContainer" style="height: 300px"></div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+      const contacts = [];
+
+      // Function to add a new contact
+      function addContact() {
+        const contactName = document
+          .getElementById("newContactName")
+          .value.trim();
+        const contactPhone = document
+          .getElementById("newContactPhone")
+          .value.trim();
+
+        if (contactName && contactPhone) {
+          contacts.push({ name: contactName, phone: contactPhone });
+          updateContactList();
+          document.getElementById("newContactName").value = "";
+          document.getElementById("newContactPhone").value = "";
+        } else {
+          alert("Please enter both name and phone number.");
+        }
+      }
+
+      // Function to update the contact list display
+      function updateContactList() {
+        const contactList = document.getElementById("contactList");
+        contactList.innerHTML = ""; // Clear existing contacts
+
+        contacts.forEach((contact, index) => {
+          const li = document.createElement("li");
+          li.innerHTML = `
+          ${contact.name} - ${contact.phone}
+          <button onclick="removeContact(${index})">Remove</button>
+        `;
+          contactList.appendChild(li);
+        });
+      }
+
+      // Function to remove a contact
+      function removeContact(index) {
+        contacts.splice(index, 1);
+        updateContactList();
+      }
+
+      // Function to add a notification
+      function addNotification(message, latitude, longitude) {
+        const notificationBox = document.getElementById("notificationBox");
+        const notification = document.createElement("div");
+        notification.innerHTML = `
+        <p>${message}</p>
+        <button onclick="acceptNotification(${latitude}, ${longitude})">Accept</button>
+        <button onclick="rejectNotification()">Reject</button>
+      `;
+        notificationBox.appendChild(notification);
+      }
+
+      // Function to accept a notification and display location on the map
+      function acceptNotification(lat, lng) {
+        alert("Thanks for accepting the request");
+        const map = L.map("mapContainer").setView([lat, lng], 13);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: "&copy; OpenStreetMap contributors",
+        }).addTo(map);
+        L.marker([lat, lng]).addTo(map);
+      }
+
+      // Function to reject a notification
+      function rejectNotification() {
+        alert("You could have saved a soul!");
+      }
+
+      // Example notification:
+      addNotification("Someone met with an accident!", 28.7041, 77.1025); // Add your data dynamically
+    </script>
+  </body>
+</html>

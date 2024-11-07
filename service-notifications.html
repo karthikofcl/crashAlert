@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Service Provider Notifications</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Accident Notifications</h2>
+      <div id="notificationBox">
+        <!-- Notifications will be added here -->
+      </div>
+
+      <div class="box" id="map">
+        <h3>Location of Victim</h3>
+        <div id="mapContainer" style="height: 300px"></div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+      function addNotification(message, latitude, longitude) {
+        const notificationBox = document.getElementById("notificationBox");
+        const notification = document.createElement("div");
+        notification.className = "notification";
+        notification.innerHTML = `
+        <p>${message}</p>
+        <button onclick="acceptNotification(${latitude}, ${longitude})">Accept</button>
+      `;
+        notificationBox.appendChild(notification);
+      }
+
+      function acceptNotification(lat, lng) {
+        const map = L.map("mapContainer").setView([lat, lng], 13);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: "&copy; OpenStreetMap contributors",
+        }).addTo(map);
+        L.marker([lat, lng]).addTo(map);
+      }
+
+      // Example notification
+      addNotification(
+        "Accident reported nearby. Immediate help needed!",
+        28.7041,
+        77.1025
+      ); // Use dynamic data here in a real setup
+    </script>
+  </body>
+</html>

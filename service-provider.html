@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Service Provider Details</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h2>Service Provider Registration</h2>
+      <form id="serviceProviderForm">
+        <label for="orgName">Organization Name:</label>
+        <input type="text" id="orgName" required />
+
+        <label for="contactNumber">Contact Number:</label>
+        <input type="tel" id="contactNumber" required />
+
+        <label for="email">Email Address:</label>
+        <input type="email" id="email" required />
+
+        <label for="transportMode">Mode of Transportation:</label>
+        <input
+          type="text"
+          id="transportMode"
+          placeholder="e.g., Ambulance, Helicopter"
+          required
+        />
+
+        <label for="serviceType">Service Type:</label>
+        <select id="serviceType">
+          <option value="part-time">Part-time</option>
+          <option value="full-time">Full-time</option>
+        </select>
+
+        <button type="button" onclick="proceedToNotifications()">
+          I'm Ready to Provide Service
+        </button>
+      </form>
+    </div>
+
+    <script>
+      function proceedToNotifications() {
+        // Redirect to the Notification Page for Service Providers
+        window.location.href = "service-notifications.html";
+      }
+    </script>
+  </body>
+</html>
